@@ -7,6 +7,10 @@ class NewsTopic {
   NewsTopic({this.newsTitle, this.newsImage});
   static const apiKey = "909487859a504f9893c89c02680301f5";
 
+  factory NewsTopic.fromJson(json) {
+    return NewsTopic(newsImage: json['urlToImage'], newsTitle: json['title']);
+  }
+
   Future<List<NewsTopic>> fetchNews(
     String searchCategory,
     String country,
@@ -19,10 +23,7 @@ class NewsTopic {
       List articles = response.data['articles'];
       List<NewsTopic> newsTopics = [];
       for (var article in articles) {
-        var item = NewsTopic(
-          newsTitle: article['title'],
-          newsImage: article['urlToImage'],
-        );
+        var item = NewsTopic.fromJson(article);
         newsTopics.add(item);
       }
       return newsTopics;
